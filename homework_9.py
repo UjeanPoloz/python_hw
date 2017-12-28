@@ -1,4 +1,4 @@
-def sep_print (symbol = '-', count = 50):
+def sep_print (symbol = '-', count = 60):
     print(symbol*count)
 
 while True:
