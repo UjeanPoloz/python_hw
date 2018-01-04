@@ -8,7 +8,16 @@ def triangle_square_and_perimeter(a, b):
     perimeter = a + b + c
     return square, perimeter
 
+def print_answer(number):
+    if number - int(number) == 0:
+        print('Площадь треугольника равна: %d' % number)
+    else:
+        print('Площадь треугольника равна: %.3f' % number)
+
 answer_square, answer_perimeter = triangle_square_and_perimeter(catheter_a, catheter_b)
 
-print('Площадь треугольника равна: %d\n'
-      'Периметр треугольника равен: %d' % (answer_square, answer_perimeter))
+
+
+print('-'*40)
+print_answer(answer_square)
+print_answer(answer_perimeter)
