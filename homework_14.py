@@ -23,4 +23,4 @@ while True:
     else:
         print('Число нечетное')
 
-    print(''*40)
+    print(''*50)
