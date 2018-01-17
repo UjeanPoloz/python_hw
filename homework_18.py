@@ -4,21 +4,18 @@ while True:
     last_symbol = input('Введите последний символ unicode:\n')
 
     def sum_symbol_codes(first, last):
+
         first = ord(first)
         last = ord(last)
+
         sum = 0
-        if first < last:
-            ind = last - first + 1
-            for i in range(ind):
-                sum = sum + first
-                first = first + 1
-        elif first == last:
-            sum = first
-        else:
-            ind = first - last + 1
-            for i in range(ind):
-                sum = sum + last
-                last = last + 1
+
+        min_symbol = min(first, last)
+        max_symbol = max(first, last)
+
+        for i in range(min_symbol, max_symbol+1):
+            sum = sum + i
+
         return sum
 
     print('\nСумма всех чисел в заданном промежутке равна: %d' % sum_symbol_codes(first_symbol, last_symbol))
