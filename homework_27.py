@@ -16,9 +16,8 @@ def my_shuffle(lst):
         lst[ind] = virtual_list[res]
 
 
-def pemrtuate(text):
-
-    permuted_text = ''
+def pemrtuate(text, split_word_num = 3):
+    permuted_text = []
 
     list_word = text.split(' ')
 
@@ -28,33 +27,29 @@ def pemrtuate(text):
         work_word = list_word[i]
 
         if len(work_word) == 1:
-            permuted_text = permuted_text + ' ' + work_word
+            permuted_text.append(work_word + ' ')
 
         else:
-            work_area = list(work_word[1:len(work_word) - 1])
+            work_area = list(work_word[1:-1])
             len_work_area = len(work_area)
-            count = len_work_area // 3
+            count = len_work_area // split_word_num
 
-            if len_work_area - count == 2:
+            if len_work_area - count == split_word_num - 1:
                 my_shuffle(work_area)
 
             else:
-                separate_three = [work_area[x:x + 3] for x in range(0, len(work_word[1:-1]), 3)]
+                split_groups = [work_area[x:x + split_word_num] for x in range(0, len(work_word[1:-1]), split_word_num)]
+                work_area = ''
 
-                for i in range(len(separate_three)):
-                    my_shuffle(separate_three[i])
-                    work_area = ''
-                    for j in range(len(separate_three)):
-                        work_area += ''.join(separate_three[j])
+                for group in split_groups:
+                    my_shuffle(group)
+                    work_area += ''.join(group)
 
-        permuted_word = work_word[0] + ''.join(work_area) + work_word[-1]
+            permuted_word = work_word[0] + ''.join(work_area) + work_word[-1]
 
-        permuted_text = permuted_text + ' ' + permuted_word
+            permuted_text.append(permuted_word + ' ')
 
-        if permuted_text[0] == ' ':
-           permuted_text = permuted_text[1:]
-
-    return permuted_text
+    return ''.join(permuted_text).strip()
 
 
 text = 'Особенно подкупает простота работы с различными структурами данных'
