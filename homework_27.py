@@ -1,4 +1,4 @@
-import random
+import random, re
 
 def my_shuffle(lst):
     virtual_list = list(lst)
@@ -15,43 +15,92 @@ def my_shuffle(lst):
     for ind, res in enumerate(random_ind):
         lst[ind] = virtual_list[res]
 
+# def word_with_symbol(word):
+#     first_symbol = ''
+#     word_part_one = ''
+#     center_symbol = ''
+#     word_part_two = ''
+#     last_symbol = ''
+#
+#     hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', word)
+#     easy_word = re.match('([\W]*)([\w]+)([\W]*)', word)
+#
+#     if easy_word:
+#         first_symbol, word_part_one, last_symbol = easy_word.groups()
+#         # print(first_symbol, word_part_one, last_symbol, '    Легкий')
+#
+#     if hard_word:
+#         first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
+#         # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
+#
+#     print(word_part_one, word_part_two)
+#
+#     # spliting_and_shuffling_word(word_part_one)
+#     # spliting_and_shuffling_word(word_part_two)
+#
+#     new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
+#
+#     return new_word
 
-def pemrtuate(text, split_word_num = 3):
-    permuted_text = []
+def spliting_and_shuffling_word(work_word, split_word_num = 3):
+    permuted_word = ''
 
-    list_word = text.split(' ')
+    if len(work_word) == 1:
+        permuted_word = work_word
 
-    for i in range(len(list_word)):
-        permuted_word = ''
+    else:
+        work_area = list(work_word[1:-1])
+        len_work_area = len(work_area)
+        count = len_work_area // split_word_num
 
-        work_word = list_word[i]
-
-        if len(work_word) == 1:
-            permuted_text.append(work_word + ' ')
+        if len_work_area - count == split_word_num - 1:
+            my_shuffle(work_area)
 
         else:
-            work_area = list(work_word[1:-1])
-            len_work_area = len(work_area)
-            count = len_work_area // split_word_num
+            split_groups = [work_area[x:x + split_word_num] \
+                            for x in range(0, len(work_word[1:-1]), split_word_num)]
+            work_area = ''
 
-            if len_work_area - count == split_word_num - 1:
-                my_shuffle(work_area)
+            for group in split_groups:
+                my_shuffle(group)
+                work_area += ''.join(group)
 
-            else:
-                split_groups = [work_area[x:x + split_word_num] for x in range(0, len(work_word[1:-1]), split_word_num)]
-                work_area = ''
+        permuted_word = work_word[0] + ''.join(work_area) + work_word[-1]
+    return permuted_word
 
-                for group in split_groups:
-                    my_shuffle(group)
-                    work_area += ''.join(group)
+def pemrtuate(text):
+    permuted_text = []
 
-            permuted_word = work_word[0] + ''.join(work_area) + work_word[-1]
+    for work_word in text.split(' '):
 
-            permuted_text.append(permuted_word + ' ')
+        first_symbol = ''
+        word_part_one = ''
+        center_symbol = ''
+        word_part_two = ''
+        last_symbol = ''
+
+        hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', work_word)
+        easy_word = re.match('([\W]*)([\w]+)([\W]*)', work_word)
+
+        if easy_word:
+            first_symbol, word_part_one, last_symbol = easy_word.groups()
+            # print(first_symbol, word_part_one, last_symbol, '    Легкий')
+            word_part_one = spliting_and_shuffling_word(word_part_one)
+
+        if hard_word:
+            first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
+            # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
+            word_part_one = spliting_and_shuffling_word(word_part_one)
+            word_part_two = spliting_and_shuffling_word(word_part_two)
+
+        new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
+
+        permuted_text.append(new_word + ' ')
 
     return ''.join(permuted_text).strip()
 
 
-text = 'Особенно подкупает простота работы с различными структурами данных'
+
+text = 'Вот и получилось (в смысле наконец-то зара_ботало) что-то замечтаельное с этим интересным текстом!'
 
 print(pemrtuate(text))
