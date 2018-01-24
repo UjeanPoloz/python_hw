@@ -15,32 +15,30 @@ def my_shuffle(lst):
     for ind, res in enumerate(random_ind):
         lst[ind] = virtual_list[res]
 
-# def word_with_symbol(word):
-#     first_symbol = ''
-#     word_part_one = ''
-#     center_symbol = ''
-#     word_part_two = ''
-#     last_symbol = ''
-#
-#     hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', word)
-#     easy_word = re.match('([\W]*)([\w]+)([\W]*)', word)
-#
-#     if easy_word:
-#         first_symbol, word_part_one, last_symbol = easy_word.groups()
-#         # print(first_symbol, word_part_one, last_symbol, '    Легкий')
-#
-#     if hard_word:
-#         first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
-#         # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
-#
-#     print(word_part_one, word_part_two)
-#
-#     # spliting_and_shuffling_word(word_part_one)
-#     # spliting_and_shuffling_word(word_part_two)
-#
-#     new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
-#
-#     return new_word
+def word_with_symbol(word):
+    first_symbol = ''
+    word_part_one = ''
+    center_symbol = ''
+    word_part_two = ''
+    last_symbol = ''
+
+    hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', word)
+    easy_word = re.match('([\W]*)([\w]+)([\W]*)', word)
+
+    if easy_word:
+        first_symbol, word_part_one, last_symbol = easy_word.groups()
+        # print(first_symbol, word_part_one, last_symbol, '    Легкий')
+        word_part_one = spliting_and_shuffling_word(word_part_one)
+
+    if hard_word:
+        first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
+        # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
+        word_part_one = spliting_and_shuffling_word(word_part_one)
+        word_part_two = spliting_and_shuffling_word(word_part_two)
+
+    new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
+
+    return new_word
 
 def spliting_and_shuffling_word(work_word, split_word_num = 3):
     permuted_word = ''
@@ -72,29 +70,7 @@ def pemrtuate(text):
     permuted_text = []
 
     for work_word in text.split(' '):
-
-        first_symbol = ''
-        word_part_one = ''
-        center_symbol = ''
-        word_part_two = ''
-        last_symbol = ''
-
-        hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', work_word)
-        easy_word = re.match('([\W]*)([\w]+)([\W]*)', work_word)
-
-        if easy_word:
-            first_symbol, word_part_one, last_symbol = easy_word.groups()
-            # print(first_symbol, word_part_one, last_symbol, '    Легкий')
-            word_part_one = spliting_and_shuffling_word(word_part_one)
-
-        if hard_word:
-            first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
-            # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
-            word_part_one = spliting_and_shuffling_word(word_part_one)
-            word_part_two = spliting_and_shuffling_word(word_part_two)
-
-        new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
-
+        new_word = word_with_symbol(work_word)
         permuted_text.append(new_word + ' ')
 
     return ''.join(permuted_text).strip()
