@@ -15,30 +15,37 @@ def my_shuffle(lst):
     for ind, res in enumerate(random_ind):
         lst[ind] = virtual_list[res]
 
-def word_with_symbol(word):
+def permute_word(word):
     first_symbol = ''
     word_part_one = ''
     center_symbol = ''
     word_part_two = ''
     last_symbol = ''
 
+    if re.match('([\W]+)', word):
+        test = ''.join(re.match('([\W]+)', word).groups())
+        first_symbol = test
+
     hard_word = re.match('([\W]*)([\w]+)([\W]+)([\w]+)([\W]*)', word)
     easy_word = re.match('([\W]*)([\w]+)([\W]*)', word)
+    only_numbers = re.match('([\d]+)([\W]*)([\d]+)([\W]*)', word)
+
+    if only_numbers:
+        pemrtuate_word = ''.join(only_numbers.groups())
+        return pemrtuate_word
 
     if easy_word:
         first_symbol, word_part_one, last_symbol = easy_word.groups()
-        # print(first_symbol, word_part_one, last_symbol, '    Легкий')
         word_part_one = spliting_and_shuffling_word(word_part_one)
 
     if hard_word:
         first_symbol, word_part_one, center_symbol, word_part_two, last_symbol = hard_word.groups()
-        # print(first_symbol, word_part_one, center_symbol, word_part_two, last_symbol, '    Жесткий')
         word_part_one = spliting_and_shuffling_word(word_part_one)
         word_part_two = spliting_and_shuffling_word(word_part_two)
 
-    new_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
+    pemrtuate_word = first_symbol + word_part_one + center_symbol + word_part_two + last_symbol
 
-    return new_word
+    return pemrtuate_word
 
 def spliting_and_shuffling_word(work_word, split_word_num = 3):
     permuted_word = ''
@@ -66,17 +73,11 @@ def spliting_and_shuffling_word(work_word, split_word_num = 3):
         permuted_word = work_word[0] + ''.join(work_area) + work_word[-1]
     return permuted_word
 
-def pemrtuate(text):
-    permuted_text = []
+def permute_text(text):
+    permuted_text = [permute_word(work_word) for work_word in text.split(' ')]
 
-    for work_word in text.split(' '):
-        new_word = word_with_symbol(work_word)
-        permuted_text.append(new_word + ' ')
+    return ' '.join(permuted_text).strip()
 
-    return ''.join(permuted_text).strip()
+text = 'Может наконец-то заработало. И теперь "все отлавливаем" и 1990-2003 и -n + 23 и n=234. И просто - и 1990 - 2014. и :?№;'
 
-
-
-text = 'Вот и получилось (в смысле наконец-то зара_ботало) что-то замечтаельное с этим интересным текстом!'
-
-print(pemrtuate(text))
+print(permute_text(text))
